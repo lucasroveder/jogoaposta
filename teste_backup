@@ -1,0 +1,310 @@
+import random
+import math
+
+animais = {
+    1: 'AVESTRUZ',
+    2: 'ÁGUIA',
+    3: 'BURRO',
+    4: 'BORBOLETA',
+    5: 'CACHORRO',
+    6: 'CABRA',
+    7: 'CARNEIRO',
+    8: 'CAMELO',
+    9: 'COBRA',
+    10: 'COELHO',
+    11: 'CAVALO',
+    12: 'ELEFANTE',
+    13: 'GALO',
+    14: 'GATO',
+    15: 'JACARÉ',
+    16: 'LEÃO',
+    17: 'MACACO',
+    18: 'PORCO',
+    19: 'PAVÃO',
+    20: 'PERU',
+    21: 'TOURO',
+    22: 'TIGRE',
+    23: 'URSO',
+    24: 'VEADO',
+    25: 'VACA'
+}
+##gera numeros random
+random_numbers = []
+bichos = []
+def Resultado():
+     while len(random_numbers) < 5:
+          num = random.randint(1000, 9999)
+          if num not in random_numbers:
+               random_numbers.append(num)
+     for i in range(5):
+          resto = random_numbers[i] % 100
+          bicho = math.ceil(resto/4)
+          if(bicho == 0):
+               bicho = 25
+          bichos.append(bicho)
+
+##imprime numero random
+def ImprimeResultado():
+    print("")
+    print("O RESULTADO DO JOGO DO BICHO EH:")
+    print("========================================")
+    for i in range(5):
+        print(random_numbers[i], "animal:", bichos[i], "-", animais[bichos[i]])
+    print("========================================")
+    print("")
+
+class Pessoa:
+     def __init__ (self, nome):
+             self.nome = nome
+             self.dinheiro = 10
+             self.numeroapostas = 0
+             self.valores = []
+             self.numero = []
+             self.animal = []
+             self.cabeca = []
+             self.dezena = []
+             self.centena = []
+             self.milhar = []
+
+#Funções
+     def ajustaDinheiro(self):
+          if (self.dinheiro != 0):
+               valor = int(input("digite o valor a ser apostado: "))
+               while (valor > self.dinheiro or valor <= 0):
+                    print("Valor invalido")
+                    valor = int(input("digite o valor a ser apostado: "))
+               self.dinheiro = self.dinheiro - valor    
+
+     ##Faz as apostas
+     
+     def fazAposta(self):
+          self.numeroapostas +=1
+          if (self.dinheiro != 0):
+               valor = int(input("digite o valor a ser apostado: \n"))
+               while (valor > self.dinheiro or valor <= 0):
+                    print("Valor invalido")
+                    valor = int(input("digite o valor a ser apostado: \n"))
+               self.valores.append(valor)
+               self.dinheiro = self.dinheiro - valor
+               n = int(input("Digite o numero a ser feita aposta \n"))
+               self.numero.append(n)
+               if(n<=25):
+                    av = input("Sua aposta eh em algum grupo de animal? S/N \n")
+                    if (av.upper() == 'S'):
+                         a = True
+                         self.animal.append(a)
+                    else:
+                         a =False
+                         self.animal.append(a)
+               if(n>25):
+                    a = False
+                    self.animal.append(a)
+               if (n>0 and n<=99 and self.animal == False):
+                    e = True
+                    self.dezena.append(e)
+               else:
+                    e = False
+                    self.dezena.append(e)
+               cv = input("Sua aposta vai ser na cabeça? S/N \n")
+               if (cv.upper() == 'S'):
+                    b = True
+                    self.cabeca.append(b)
+               else:
+                    b = False
+                    self.cabeca.append(b)
+               if (n>999 and n<10000):
+                    c = True
+                    self.milhar.append(c)
+               else:
+                    c = False
+                    self.milhar.append(c)
+               if (n<=999 and n>99):
+                    d = True
+                    self.centena.append(d)
+               else:
+                    d = False
+                    self.centena.append(d)
+          else:
+               print("Voce nao tem dinheiro suficiente")
+          
+
+##Verifica Aposta
+     def VerificaAposta(self):
+               dinheirofinal = 10
+               for j in range (self.numeroapostas):
+                    for k in range (5):
+                              if(self.animal[j] == True):
+                                   if(self.numero[j] == bichos[k]):
+                                        print("parabens a sua aposta de numero", j+1, "venceu")
+                                        print(self.numero[j])
+                                        if(self.cabeca[j]):
+                                             self.dinheiro = self.dinheiro + self.valores[j]*18
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                                        else:
+                                             self.dinheiro = self.dinheiro + self.valores[j]*3.6
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                              if(self.milhar[j] == True):
+                                   if(self.numero[j] == random_numbers[k]):
+                                        print("parabens a sua aposta de numero", j+1, "venceu")
+                                        print(self.numero[j])
+                                        if(self.cabeca == True):
+                                             self.dinheiro = self.dinheiro + self.valores[j]*4000
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                                        else:
+                                             self.dinheiro = self.dinheiro + self.valores[j]*800
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                              if(self.centena[j] == True):
+                                   if(self.numero[j] == (random_numbers[k]%10)):
+                                        print("parabens a sua aposta de numero", j+1, "venceu")
+                                        print(self.numero[j])
+                                        if(self.cabeca[j] ==True):
+                                             self.dinheiro = self.dinheiro + self.valores[j]*600
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                                        else:
+                                             self.dinheiro = self.dinheiro + self.valores[j]*120
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                              if(self.dezena[j] == True):
+                                   if(self.numero[j] == (random_numbers[k]%100)):
+                                        print("parabens a sua aposta de numero", j+1, "venceu")
+                                        if(self.animal[j] == True):
+                                             print("Grupo de animal apostado ", animais[self.numero[j]])
+                                        else:
+                                             print(self.numero[j])
+                                        if(self.cabeca[j] == True):
+                                             self.dinheiro = self.dinheiro + self.valores[j]*60
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                                        else:
+                                             self.dinheiro = self.dinheiro + self.valores[j]*12
+                                             print("seu novo saldo eh de:", self.dinheiro)
+                    dinheirofinal = dinheirofinal - self.valores[j]
+               if(self.dinheiro == dinheirofinal):
+                    print("voce nao ganhou nada, otario kkkkkkkk")
+               print("Atualmente vc está com: ", self.dinheiro, "reais")
+     def getNome(self):
+          return self.nome
+     def getDinheiro(self):
+          return self.dinheiro
+     def veApostas(self):
+          i=0
+          while(i<self.numeroapostas):
+               if (self.animal[i] == False):
+                    print(self.valores[i], "reais  -  no numero:", self.numero[i])
+                    i+=1
+               else:
+                    j = self.numero[i]
+                    print(self.valores[i], "reais  -  no animal:", self.numero[i], "-",animais[j])
+                    i+=1
+          print("========================================")
+
+
+jogador = []
+
+def Cadastro():
+     
+     jogador1 = Pessoa(str(input("Digite o nome do jogador: \n")))
+     jogador.append(jogador1)
+
+def ImprimeCadastro():
+     x=1
+     for jogador1 in jogador:
+          print("Nome jogador",x,": ", jogador1.getNome())
+          x+=1
+
+
+
+
+                              
+##Main
+while(True):
+     print("==========================================")
+     print("1: cadastrar jogador")
+     print("2: escolher um jogador")
+     print("3: ver lista de jogadores")
+     print("4: sair e ver resultados")
+     print("==========================================")
+     print("")
+     menu1 = int(input())
+     print(menu1, ":")
+     print("")
+     if(menu1 == 1):
+          Cadastro()
+          ImprimeCadastro()
+     if(menu1 == 2):
+          ImprimeCadastro()
+          print()
+          print("==========================================")
+          print("Escolha o número correspondente do jogador desejado")
+          print("==========================================")
+          print("")
+          a = int(input())
+          a=a-1
+          while(True):
+               print("==========================================")
+               print("1: ver quantidade de dinheiro")
+               print("2: fazer apostas")
+               print("3: ver apostas feitas")
+               print("4: sair do menu 2")
+               print("==========================================")
+               print("")
+               menu2 = int(input())
+               print(menu2, ":")
+               print("")
+               if(menu2 == 1):
+                    print(jogador[a].getDinheiro(), " reais")
+               if(menu2 ==2):
+                    jogador[a].fazAposta()
+               if(menu2 == 3):
+                    jogador[a].veApostas()
+               if(menu2 == 4):
+                    break
+
+     if(menu1 == 3):
+          ImprimeCadastro()
+     if(menu1 == 4):
+          break
+     
+
+               
+
+          
+ 
+
+
+
+
+
+
+'''Pessoa1 = Pessoa(input("Digite seu nome: "))
+
+
+qtdAposta = input("Voce deseja fazer uma aposta? S/N  \n")
+if(qtdAposta.upper() == 'S'):
+     Pessoa1.fazAposta()
+     while(qtdAposta.upper() == 'S' and Pessoa1.dinheiro>0):
+          qtdAposta = input("Voce deseja fazer outra aposta? S/N\n")
+          if(qtdAposta.upper() == 'S'):
+               Pessoa1.fazAposta()
+          else:
+               break
+i=0
+print("Suas apostas são:")
+print("========================================")
+while(i<Pessoa1.numeroapostas):
+     if (Pessoa1.animal[i] == False):
+          print(Pessoa1.valores[i], "reais  -  no numero:", Pessoa1.numero[i])
+          i+=1
+     else:
+          j = Pessoa1.numero[i]
+          print(Pessoa1.valores[i], "reais  -  no animal:", Pessoa1.numero[i], "-",animais[j])
+          i+=1
+print("========================================")
+print("Fim do codigo")'''
+
+Resultado()
+print("")
+ImprimeResultado()
+for l in range(len(jogador)):
+     print(jogador[l].getNome(), ":")
+     jogador[l].VerificaAposta()
+     print("")
+
